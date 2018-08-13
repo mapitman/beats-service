@@ -1,7 +1,7 @@
 default: build
 
 build:
-	go get ./...
+	go get -u -v ./...
 	go build
 
 install:
