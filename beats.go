@@ -16,12 +16,12 @@ func main() {
 		obj := gin.H{
 			"beats": beats,
 		}
-		if strings.Contains(c.GetHeader("accept"), "text/html") {
-
+		if strings.Contains(c.GetHeader("accept"), "application/json") {
+			c.Header("Content-Type", "application/json")
+			c.JSON(200, obj)
+		} else {
 			c.Header("Content-Type", "text/html")
 			c.HTML(200, "beats.html", obj)
-		} else {
-			c.JSON(200, obj)
 		}
 	})
 
