@@ -1,14 +1,16 @@
 # build stage
-FROM golang:1.10 as build-env
-ADD . /go/src/mapitman/beats-service
-RUN cd /go/src/mapitman/beats-service && go get ./... && go build
+FROM golang:1.25 AS build-env
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN go build -o beats-service .
 
 # final stage
-# FROM scratch
 FROM gcr.io/distroless/base
 WORKDIR /app
-COPY --from=build-env /go/src/mapitman/beats-service/beats-service /app/beats-service
-COPY --from=build-env /go/src/mapitman/beats-service/templates/beats.html /app/templates/beats.html
+COPY --from=build-env /app/beats-service /app/beats-service
+COPY --from=build-env /app/templates/beats.html /app/templates/beats.html
 EXPOSE 8080/tcp
 
 ENTRYPOINT ["/app/beats-service"]
