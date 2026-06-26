@@ -17,7 +17,7 @@ The service will be available at `http://localhost:8080/beats`.
 Build and run the service directly with Go:
 
 ```bash
-make build
+just build
 ./beats-service
 ```
 
